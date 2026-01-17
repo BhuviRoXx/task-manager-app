@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Plus } from "lucide-react";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import ProjectCard from "./ProjectCard"
 
-const WelcomeBox = () => {
+const WelcomeBox = ({ fetchData }) => {
   const { auth } = useAuth();
   const [open, setOpen] = useState(false);
 
@@ -20,7 +20,7 @@ const WelcomeBox = () => {
 
         <button
           onClick={() => setOpen(true)}
-          className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+          className="flex items-center gap-2 bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-700"
         >
           <Plus size={18} />
           Create Project
@@ -28,7 +28,7 @@ const WelcomeBox = () => {
       </div>
 
       {/* Create Project Modal */}
-      {open && <ProjectCard onClose={() => setOpen(false)} />}
+      {open && <ProjectCard fetchData = {fetchData} onClose={() => setOpen(false)} />}
     </>
   );
 };

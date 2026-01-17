@@ -1,9 +1,9 @@
 import axios from "axios";
 import { X } from "lucide-react";
 import { useState } from "react";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
-const ProjectCard = ({ onClose }) => {
+const TaskCard = ({ projectId, fetchData, onClose }) => {
   const auth = useAuth();
 
   const [form, setForm] = useState({
@@ -11,6 +11,8 @@ const ProjectCard = ({ onClose }) => {
     description: "",
     startDate: "",
     endDate: "",
+    status: "Not Started",
+    priority : ""
   });
 
   const [loading, setLoading] = useState(false);
@@ -27,7 +29,7 @@ const ProjectCard = ({ onClose }) => {
 
     try {
       const res = await axios.post(
-        "/api/project/createproject",
+        `/api/project/${projectId}/createtask`,
         form,
         {
           headers: {
@@ -36,11 +38,12 @@ const ProjectCard = ({ onClose }) => {
         }
       );
 
-      console.log("Project created:", res.data);
+      console.log("Task created:", res.data);
+      fetchData();
       onClose();
     } catch (err) {
       console.error(err);
-      setError(err.response?.data?.message || "Failed to create project");
+      setError(err.response?.data?.message || "Failed to create Task");
     } finally {
       setLoading(false);
     }
@@ -58,14 +61,14 @@ const ProjectCard = ({ onClose }) => {
           <X />
         </button>
 
-        <h3 className="text-lg font-semibold mb-4">Create Project</h3>
+        <h3 className="text-lg font-semibold mb-4">Create Task</h3>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           
           <input
             type="text"
             name="name"
-            placeholder="Project Name"
+            placeholder="Task Name"
             value={form.name}
             onChange={handleChange}
             required
@@ -98,6 +101,41 @@ const ProjectCard = ({ onClose }) => {
             />
           </div>
 
+          <div className="flex gap-3">
+            <select
+              name="status"
+              value={form.status}
+              onChange={handleChange}
+              className="w-full p-2 border rounded"
+            >
+              {/* Placeholder option */}
+              <option value="" disabled>
+                Select status
+              </option>
+
+              <option value="Not Started">Not Started</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Completed">Completed</option>
+            </select>
+
+            <select
+              name="Priority"
+              value={form.priority}
+              onChange={handleChange}
+              className="w-full p-2 border rounded"
+            >
+              {/* Placeholder option */}
+              <option value="" disabled>
+                Select Priority
+              </option>
+
+              <option value="High">High</option>
+              <option value="Medium">Medium</option>
+              <option value="Low">Low</option>
+            </select>
+          </div>
+
+
           {/* Error message */}
           {error && (
             <p className="text-red-500 text-sm text-center">{error}</p>
@@ -112,7 +150,7 @@ const ProjectCard = ({ onClose }) => {
                 : "bg-blue-600 hover:bg-blue-700"
             }`}
           >
-            {loading ? "Creating..." : "Create Project"}
+            {loading ? "Creating..." : "Create Task"}
           </button>
         </form>
       </div>
@@ -120,4 +158,4 @@ const ProjectCard = ({ onClose }) => {
   );
 };
 
-export default ProjectCard;
+export default TaskCard;

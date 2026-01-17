@@ -2,18 +2,18 @@ import { useEffect, useState } from "react";
 import ProjectSummaryCards from "../../components/dashboard/ProjectSummaryCards"
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
-import WelcomeBox from "../../components/dashboard/WelcomeBox";
 
 
-const Dashboard = () => {
+const ProjectPage = () => {
   const { auth } = useAuth();
 
   const [projects, setProjects] = useState([]);
   const [myTasks, setMyTasks] = useState([]);
 
-    const fetchData = async () => {
-      if (!auth?.accessToken) return;
+  useEffect(() => {
+    if (!auth?.accessToken) return;
 
+    const fetchData = async () => {
       const token = auth.accessToken;
 
       // const [projectsRes, tasksRes] = await Promise.all([
@@ -34,18 +34,19 @@ const Dashboard = () => {
       // setMyTasks(tasksRes.data);
     };
 
-  useEffect(() => {
     fetchData();
   }, [auth?.accessToken]);
 
   return (
-      <div className="flex flex-col  h-full w-full gap-10 bg-white">
-        <WelcomeBox fetchData = {fetchData}/>
+    <div className="flex bg-gray-50">
+      <div className="flex flex-col  w-full gap-10 bg-white">
         <ProjectSummaryCards
           projects = {projects}
         />
       </div>
+      
+    </div>
   );
 };
 
-export default Dashboard;
+export default ProjectPage;

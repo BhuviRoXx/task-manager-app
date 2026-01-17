@@ -1,5 +1,5 @@
 import { Search, Sparkles, LogOut } from "lucide-react";
-import LogoutButton from "../components/LogoutButton";
+import LogoutButton from "./dashboard/LogoutButton";
 
 const Header = ({ userName, onAICommand }) => {
   return (

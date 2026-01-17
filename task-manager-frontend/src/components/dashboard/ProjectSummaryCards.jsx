@@ -52,11 +52,11 @@ const ProjectSummaryCards = ({ projects }) => {
 
   return (
     <div className="px-20">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 ">
       {cards.map((card, idx) => (
         <div
           key={idx}
-          className="bg-white w-70 border rounded-sm p-5 flex justify-between items-center"
+          className="bg-white w-70 border border-gray-200 rounded-sm p-5 flex justify-between items-center"
         >
           <div>
             <p className="text-sm text-gray-500">{card.label}</p>
@@ -71,7 +71,7 @@ const ProjectSummaryCards = ({ projects }) => {
         </div>
       ))}
     </div>
-      <div className="w-full max-w-5xl mx-auto mt-6">
+      <div className="w-full max-w-5xl mt-6">
         <h2 className="text-xl font-semibold mb-4 text-gray-800">
           Project Overview
         </h2>
@@ -80,8 +80,8 @@ const ProjectSummaryCards = ({ projects }) => {
           {projects.map((p) => (
             <div
               key={p.id}
-              onClick={() => navigate("/projects/${p.id}/gettasks")}
-              className="bg-white border rounded-lg p-4 shadow-sm hover:shadow-md transition"
+              onClick={() => navigate(`/project/${p.id}/gettasks`)}
+              className="bg-white border-r border-gray-200 rounded-md p-4 shadow-sm hover:shadow-md transition"
             >
               {/* Project Name */}
               <h3 className="text-lg font-semibold text-gray-900 mb-1">

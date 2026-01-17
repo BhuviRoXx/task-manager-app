@@ -1,6 +1,6 @@
-import User from "./User.js";
-import Project from "./Project.js";
-import Task from "./Task.js";
+import User from "./userSchema.js";
+import Project from "./projectSchema.js";
+import Task from "./taskSchema.js";
 
 // User ↔ Project
 User.hasMany(Project, { foreignKey: "ownerId", as: "projects" });
