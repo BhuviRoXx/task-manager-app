@@ -13,12 +13,15 @@ const AiSearchBox = ({ projectId, setTasks, fetchData, setAiMode }) => {
     if (e.key !== "Enter") return;
     if (!input.trim() || !projectId) return;
 
+    const userInput = input; // preserve value
+    setInput(""); 
+
     try {
       setLoading(true);
 
       const res = await axios.post(
         `/api/ai/${projectId}`,
-        { command: input },
+        { command: userInput },
         {
           headers: {
             Authorization: `Bearer ${auth.accessToken}`,
@@ -35,12 +38,11 @@ const AiSearchBox = ({ projectId, setTasks, fetchData, setAiMode }) => {
       } else {
         fetchData();
       }
-
-      setInput("");
     } catch (err) {
       console.error("AI command failed", err);
     } finally {
       setLoading(false);
+      fetchData();
     }
   };
 

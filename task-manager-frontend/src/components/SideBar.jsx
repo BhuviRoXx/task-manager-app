@@ -13,9 +13,9 @@ const Sidebar = ({ myTasks }) => {
     <aside className="w-60 h-screen bg-white border-r border-gray-200">
       {/* Workspace */}
       <div className="p-6 border-b border-gray-200">
-        <h2 className="text-m font-bold">Victopia Labs</h2>
-        <p className="text-xs text-gray-500">Workspace</p>
+        <img src="/victopia-logo.webp" alt="Victopia Logo" className="h-10 w-auto" />
       </div>
+
 
       {/* Navigation */}
       <nav className="flex-1 p-4">

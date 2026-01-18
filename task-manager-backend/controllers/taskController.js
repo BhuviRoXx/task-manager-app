@@ -42,6 +42,7 @@ export const getTasks = async (req, res) => {
     const { projectId }  = req.params;
     const { status }  = req.body;
     let projectTasks;
+    let allTasks;
     if(!status && projectId){
       projectTasks = await Project.findOne({
         where: {
@@ -73,19 +74,16 @@ export const getTasks = async (req, res) => {
       });
     }
     else if(!projectId){//getalltasks
-      projectTasks = await Project.findOne({
+      allTasks = await Task.findAll({
         where: {
-          ownerId: ownerId,
+          assignedTo: ownerId,
         },
-        include: [
-          {
-            model: Task,
-            as: "tasks",
-          },
-        ],
       });
+      projectTasks = {
+        tasks : allTasks
+      }
     }
-
+    console.log(projectTasks)
     if (!projectTasks) {
       return res.status(404).json({
         message: "Project not found or access denied",
@@ -178,21 +176,18 @@ export const updateTaskStatus = async (req, res) => {
       task = tasks[0];
     }
 
-    // 4️⃣ No resolution
     if (!task) {
       return res.status(404).json({
         message: "Task not found in this project",
       });
     }
 
-    // 5️⃣ CENTRALIZED STATE TRANSITION CHECK
     if (!canTransition(task.status, newStatus)) {
       return res.status(400).json({
         message: `Invalid status transition: ${task.status} → ${newStatus}`,
       });
     }
 
-    // 6️⃣ Update
     task.status = newStatus;
     await task.save();
 
