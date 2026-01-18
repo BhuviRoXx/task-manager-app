@@ -41,7 +41,7 @@ const SignIn = () => {
             placeholder="Email"
             value={form.email}
             onChange={(e) => setForm({ ...form, email: e.target.value })}
-            className="w-full p-2 border rounded"
+            className="w-full p-2 border border-gray-400 rounded"
             required
           />
         </div>
@@ -51,13 +51,13 @@ const SignIn = () => {
             placeholder="Password"
             value={form.password}
             onChange={(e) => setForm({ ...form, password: e.target.value })}
-            className="w-full p-2 border rounded"
+            className="w-full p-2 border border-gray-400 rounded"
             required
           />
         </div>
         <button
           onClick={handleLogin}
-          className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
+          className="w-full bg-gray-600 text-white p-2 rounded hover:bg-gray-700"
         >
           Login
         </button>

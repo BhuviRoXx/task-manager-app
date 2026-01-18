@@ -72,7 +72,7 @@ const TaskCard = ({ projectId, fetchData, onClose }) => {
             value={form.name}
             onChange={handleChange}
             required
-            className="w-full p-2 border rounded"
+            className="w-full p-2 border border-gray-400 rounded"
           />
 
           <textarea
@@ -80,7 +80,7 @@ const TaskCard = ({ projectId, fetchData, onClose }) => {
             placeholder="Description"
             value={form.description}
             onChange={handleChange}
-            className="w-full p-2 border rounded"
+            className="w-full p-2 border border-gray-400 rounded"
           />
 
           <div className="flex gap-3">
@@ -90,14 +90,14 @@ const TaskCard = ({ projectId, fetchData, onClose }) => {
               value={form.startDate}
               onChange={handleChange}
               required
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border border-gray-400 rounded"
             />
             <input
               type="date"
               name="endDate"
               value={form.endDate}
               onChange={handleChange}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border border-gray-400 rounded"
             />
           </div>
 
@@ -106,7 +106,7 @@ const TaskCard = ({ projectId, fetchData, onClose }) => {
               name="status"
               value={form.status}
               onChange={handleChange}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border border-gray-400 rounded"
             >
               {/* Placeholder option */}
               <option value="" disabled>
@@ -122,7 +122,7 @@ const TaskCard = ({ projectId, fetchData, onClose }) => {
               name="Priority"
               value={form.priority}
               onChange={handleChange}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border border-gray-400 rounded"
             >
               {/* Placeholder option */}
               <option value="" disabled>
@@ -147,7 +147,7 @@ const TaskCard = ({ projectId, fetchData, onClose }) => {
             className={`w-full py-2 rounded text-white ${
               loading
                 ? "bg-gray-400 cursor-not-allowed"
-                : "bg-blue-600 hover:bg-blue-700"
+                : "bg-gray-600 hover:bg-gray-700"
             }`}
           >
             {loading ? "Creating..." : "Create Task"}

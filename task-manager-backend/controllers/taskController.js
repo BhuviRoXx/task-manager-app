@@ -1,5 +1,6 @@
 import { Project, Task } from "../model/index.js";
 import { canTransition } from "../utils/taskState.js";
+import { Op } from "sequelize";
 
 export const createTask = async (req, res) => {
   try {
@@ -39,19 +40,51 @@ export const getTasks = async (req, res) => {
   try {
     const ownerId = req.user.id;
     const { projectId }  = req.params;
-
-    const projectTasks = await Project.findOne({
-      where: {
-        id: projectId,
-        ownerId: ownerId,
-      },
-      include: [
-        {
-          model: Task,
-          as: "tasks",
+    const { status }  = req.body;
+    let projectTasks;
+    if(!status && projectId){
+      projectTasks = await Project.findOne({
+        where: {
+          id: projectId,
+          ownerId: ownerId,
         },
-      ],
-    });
+        include: [
+          {
+            model: Task,
+            as: "tasks",
+          },
+        ],
+      });
+    }
+    else if(status){//ai
+       projectTasks = await Project.findAll({
+        where: {
+          id: projectId,
+          ownerId: ownerId,
+        },
+        include: [
+          {
+            model: Task,
+            as: "tasks",
+            where: status ? { status: status.trim() } : undefined,
+            required: false, // include even if no tasks match
+          },
+        ],
+      });
+    }
+    else if(!projectId){//getalltasks
+      projectTasks = await Project.findOne({
+        where: {
+          ownerId: ownerId,
+        },
+        include: [
+          {
+            model: Task,
+            as: "tasks",
+          },
+        ],
+      });
+    }
 
     if (!projectTasks) {
       return res.status(404).json({
@@ -102,7 +135,7 @@ export const deleteTask = async (req, res) => {
 export const updateTaskStatus = async (req, res) => {
   try {
     const { projectId, taskId } = req.params;
-    const { status: newStatus } = req.body;
+    const { status: newStatus, name : taskName } = req.body;
 
     // 1️⃣ Verify project exists
     const project = await Project.findByPk(projectId);
@@ -110,30 +143,61 @@ export const updateTaskStatus = async (req, res) => {
       return res.status(404).json({ message: "Project not found" });
     }
 
-    // 2️⃣ Verify task belongs to project
-    const task = await Task.findOne({
-      where: { id: taskId, projectId },
-    });
+    let task;
 
+    // 2️⃣ FRONTEND FLOW (taskId exists)
+    if (taskId) {
+      task = await Task.findOne({
+        where: { id: taskId, projectId },
+      });
+    }
+
+    // 3️⃣ AI FLOW (taskId missing → resolve by name)
+    else if (taskName) {
+      const tasks = await Task.findAll({
+        where: {
+          projectId,
+          name: {
+            [Op.like]: `%${taskName.trim()}%`,
+          },
+        },
+      });
+
+      if (tasks.length === 0) {
+        return res.status(404).json({
+          message: `No task found matching "${taskName}"`,
+        });
+      }
+
+      if (tasks.length > 1) {
+        return res.status(400).json({
+          message: `Multiple tasks match "${taskName}". Please be more specific.`,
+        });
+      }
+
+      task = tasks[0];
+    }
+
+    // 4️⃣ No resolution
     if (!task) {
       return res.status(404).json({
         message: "Task not found in this project",
       });
     }
 
-    // 3️⃣ Centralized transition check
+    // 5️⃣ CENTRALIZED STATE TRANSITION CHECK
     if (!canTransition(task.status, newStatus)) {
       return res.status(400).json({
         message: `Invalid status transition: ${task.status} → ${newStatus}`,
       });
     }
 
-    // 4️⃣ Update
+    // 6️⃣ Update
     task.status = newStatus;
     await task.save();
 
     res.json({
-      message: "Task status updated",
+      message: "Task status updated successfully",
       task,
     });
   } catch (err) {

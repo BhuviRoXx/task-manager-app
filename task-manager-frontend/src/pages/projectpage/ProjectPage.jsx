@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import ProjectSummaryCards from "../../components/dashboard/ProjectSummaryCards"
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
+import WelcomeBox from "../../components/dashboard/WelcomeBox"
 
 
 const ProjectPage = () => {
@@ -38,7 +39,8 @@ const ProjectPage = () => {
   }, [auth?.accessToken]);
 
   return (
-    <div className="flex bg-gray-50">
+    <div className="flex flex-col gap-5">
+      <WelcomeBox/>
       <div className="flex flex-col  w-full gap-10 bg-white">
         <ProjectSummaryCards
           projects = {projects}

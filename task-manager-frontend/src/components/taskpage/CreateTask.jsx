@@ -18,13 +18,13 @@ const CreateTask = (props) => {
         <p className="text-gray-500">Here's what's happening with your projects today</p>
         </div>
 
-        <button
+        {props.projectId && (<button
           onClick={() => setOpen(true)}
           className="flex items-center gap-2 bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-700"
         >
           <Plus size={18} />
           New Task
-        </button>
+        </button>)}
       </div>
       {/* Create Project Modal */}
       {open && <TaskCard projectId = { props.projectId } fetchData={props.fetchData} onClose={() => setOpen(false)} />}

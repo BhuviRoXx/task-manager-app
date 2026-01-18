@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import authRouter from "./routes/authRouter.js";
 import taskRouter from "./routes/taskRouter.js";
+import aiRouter from "./routes/aiRouter.js";
 import { connectDB } from "./config/db.js"
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -27,3 +28,5 @@ app.listen(port, () => {
 })
 app.use("/api/auth", authRouter);
 app.use("/api/project", taskRouter);
+app.use("/api/task", taskRouter);
+app.use("/api/ai", aiRouter);

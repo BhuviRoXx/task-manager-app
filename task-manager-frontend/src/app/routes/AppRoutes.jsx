@@ -20,6 +20,7 @@ export default function AppRoutes() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/project/:projectId/gettasks" element={<TaskPage />} />
           <Route path="/project" element={<ProjectPage />} />
+          <Route path="/task" element={<TaskPage />} />
         </Route>
 
       </Routes>

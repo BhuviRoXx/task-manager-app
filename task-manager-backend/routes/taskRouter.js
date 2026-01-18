@@ -15,6 +15,7 @@ router.get("/getprojects", verifyToken, getProjects);
 
 router.post("/:projectId/createtask", verifyToken, createTask);
 router.get("/:projectId/gettasks", verifyToken, getTasks);
+router.get("/getalltask", verifyToken, getTasks);
 router.delete("/:projectId/deletetask/:taskId", deleteTask);
 router.patch("/:projectId/task/:taskId/status", updateTaskStatus);
 

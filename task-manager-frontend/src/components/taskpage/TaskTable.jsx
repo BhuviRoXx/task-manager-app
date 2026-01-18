@@ -3,9 +3,9 @@ import axios from "axios";
 import { Trash2 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 
-export default function TaskTable({ tasks = [], projectId, fetchData }) {
+export default function TaskTable({ tasks = [], projectId, fetchData, setAiMode }) {
   const { auth } = useAuth();
-
+  console.log("tasktable",tasks);
   const [statusFilter, setStatusFilter] = useState("All");
   const [priorityFilter, setPriorityFilter] = useState("All");
   const [selectedTasks, setSelectedTasks] = useState([]);
@@ -93,7 +93,9 @@ export default function TaskTable({ tasks = [], projectId, fetchData }) {
       <div className="flex gap-4">
         <select
           value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
+          onChange={(e) => {setStatusFilter(e.target.value);
+            setAiMode(false);}
+          }
           className="shadow border border-gray-200 rounded px-3 py-2 text-sm"
         >
           <option value="All">All Status</option>
@@ -104,7 +106,9 @@ export default function TaskTable({ tasks = [], projectId, fetchData }) {
 
         <select
           value={priorityFilter}
-          onChange={(e) => setPriorityFilter(e.target.value)}
+          onChange={(e) => { setPriorityFilter(e.target.value);
+            setAiMode(false);
+          }}
           className="shadow border border-gray-200 rounded px-3 py-2 text-sm"
         >
           <option value="All">All Priority</option>

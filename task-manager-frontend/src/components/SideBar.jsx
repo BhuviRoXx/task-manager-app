@@ -1,7 +1,7 @@
 import {
   LayoutDashboard,
   Folder,
-  Users,
+  ListTodo,
   Settings,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +10,7 @@ const Sidebar = ({ myTasks }) => {
   const navigate = useNavigate(); // ✅ inside component
 
   return (
-    <aside className="w-64 h-screen bg-white border-r border-gray-200">
+    <aside className="w-60 h-screen bg-white border-r border-gray-200">
       {/* Workspace */}
       <div className="p-6 border-b border-gray-200">
         <h2 className="text-m font-bold">Victopia Labs</h2>
@@ -21,33 +21,9 @@ const Sidebar = ({ myTasks }) => {
       <nav className="flex-1 p-4">
         <SidebarItem icon={<LayoutDashboard size={18} />} label="Dashboard" route="" navigate={navigate} />
         <SidebarItem icon={<Folder size={18} />} label="Projects" route="project" navigate={navigate} />
-        <SidebarItem icon={<Users size={18} />} label="Team" route="project" navigate={navigate} />
-        <SidebarItem icon={<Settings size={18} />} label="Settings" route="project" navigate={navigate} />
+        <SidebarItem icon={<ListTodo size={18} />} label="Tasks" route="task" navigate={navigate} />
+        <SidebarItem icon={<Settings size={18} />} label="Settings" route="task" navigate={navigate} />
       </nav>
-
-      {/* My Tasks */}
-      <div className="p-6">
-        <h4 className="text-md font-semibold text-black mb-3">My Tasks</h4>
-        {myTasks?.length > 0 ? (
-          myTasks.slice(0, 3).map(task => (
-            <TaskItem key={task._id} label={task.name} state={task.state} />
-          ))
-        ) : (
-          <p className="text-sm text-gray-400">No tasks assigned</p>
-        )}
-      </div>
-
-      {/* My Projects */}
-      <div className="p-6">
-        <h4 className="text-md font-semibold text-black mb-3">My Projects</h4>
-        {myTasks?.length > 0 ? (
-          myTasks.slice(0, 3).map(task => (
-            <TaskItem key={task._id} label={task.name} state={task.state} />
-          ))
-        ) : (
-          <p className="text-sm text-gray-400">No Projects yet, create one</p>
-        )}
-      </div>
     </aside>
   );
 };
